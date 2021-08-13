@@ -47,24 +47,8 @@
                     <div class="col-sm-8">
                         <div class="shop-menu pull-right">
                             <ul class="nav navbar-nav">
-                                <?php
-                                   $customer_id = Session::get('customer_id');
-                                   $shipping_id = Session::get('shipping_id');
-                                   if($customer_id!=NULL && $shipping_id==NULL){
-                                 ?>
-                                  <li><a href="{{URL::to('/checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
 
-                                <?php
-                                 }elseif($customer_id!=NULL && $shipping_id!=NULL){
-                                 ?>
-                                 <li><a href="{{URL::to('/payment')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
-                                 <?php
-                                }else{
-                                ?>
-                                 <li><a href="{{URL::to('/login-checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
-                                <?php
-                                 }
-                                ?>
+                                <li><a href="{{URL::to('/checkout')}}"><i class="fa fa-crosshairs"></i> Thanh toán</a></li>
 
                                 <li><a href="{{URL::to('/show-cart')}}"><i class="fa fa-shopping-cart"></i> Giỏ hàng</a></li>
                                 <?php

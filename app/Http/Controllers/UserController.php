@@ -68,13 +68,81 @@ class UserController extends Controller
        return Redirect::to('all-user');
    }
    public function save_user_tt(Request $request){
+
+
     $this->AuthLogin();
    $data = array();
-   $data['customer_name'] = $request->customer_name;
-   $data['customer_phone'] = $request->customer_phone;
-   $data['customer_email'] = $request->customer_email;
-   $data['customer_password'] = md5($request->customer_password);
+   
 
+    if ($request->customer_name == '') {
+
+        Session::put('namedangly','Name không được để trống');
+        return Redirect::to('login-checkout');
+
+    } elseif (is_numeric($request->customer_name)) {
+
+        Session::put('namedangly','Name không thể để là số');
+        return Redirect::to('login-checkout');
+
+
+    } elseif (strlen($request->customer_name) < 3) {
+
+        Session::put('namedangly','Name không được nhỏ hơn 3 kí tự');
+        return Redirect::to('login-checkout');
+
+
+    } else {
+
+        $data['customer_name'] = $request->customer_name;
+    }
+    // vali phone
+    if ($request->customer_phone == '') {
+
+        Session::put('namedangly','SĐT không được để trống');
+        return Redirect::to('login-checkout');
+
+    } elseif (!is_numeric($request->customer_phone)) {
+
+        Session::put('namedangly','SĐT phải là số');
+        return Redirect::to('login-checkout');
+
+
+    } elseif ( strlen($request->customer_phone) !== 10) {
+
+        Session::put('namedangly','SĐT phai la 10 so');
+        return Redirect::to('login-checkout');
+
+
+    } else {
+
+       $data['customer_phone'] = $request->customer_phone;
+    }
+    // vali mail
+    if ($request->customer_email == '') {
+
+        Session::put('namedangly','email không được để trống');
+        return Redirect::to('login-checkout');
+
+    } else {
+
+        $data['customer_email'] = $request->customer_email;
+    }
+    // vali pass
+    if ($request->customer_password == '') {
+
+        Session::put('namedangly','password không được để trống');
+        return Redirect::to('login-checkout');
+
+    } elseif ( strlen($request->customer_password) < 6) {
+
+        Session::put('namedangly','password phai lơn hơn 6 kí tự');
+        return Redirect::to('login-checkout');
+
+
+    } else {
+
+        $data['customer_password'] = md5($request->customer_password);
+    }
    DB::table('tbl_customers')->insert($data);
    Session::put('message','Thêm user thành công');
    return Redirect::to('/trang-chu');

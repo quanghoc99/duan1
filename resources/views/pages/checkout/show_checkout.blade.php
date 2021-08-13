@@ -17,12 +17,17 @@
 				<div class="row">
 					<div class="col-sm-12 clearfix">
 						<div class="bill-to">
-							<p>Điền thông tin gửi hàng</p>
+							<p>Thông Tin Gửi Hàng Của Bạn</p>
 							<div class="form-one">
                             <?php
                         $customer_name = Session::get('customer_name');
                         $customer_email = Session::get('customer_email');
                         $customer_phone = Session::get('customer_phone');
+						$nameshipping = Session::get('nameshipping');
+						if($nameshipping){
+							echo '<span class="text-alert" style="color:red;">'.$nameshipping.'</span>';
+							Session::put('nameshipping',null);
+							}
                         ?>
 								<form action="{{URL::to('/save-checkout-customer')}}" method="POST">
 									{{csrf_field()}}

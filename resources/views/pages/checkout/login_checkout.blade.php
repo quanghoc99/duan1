@@ -7,9 +7,16 @@
 				<div class="col-sm-4 col-sm-offset-1">
 					<div class="login-form"><!--login form-->
 						<h2>Đăng nhập tài khoản</h2>
+						<?php 
+							$message = Session::get('message');
+							if($message){
+								echo '<span class="text-alert" style="color:red;">'.$message.'</span>';
+								Session::put('message',null);
+							}
+						?>
 						<form action="{{URL::to('/login-customer')}}" method="POST">
 							{{csrf_field()}}
-							<input type="text" name="email_account" placeholder="Tài khoản" />
+							<input type="email" name="email_account" placeholder="email" />
 							<input type="password" name="password_account" placeholder="Password" />
 							<span>
 								<input type="checkbox" class="checkbox">
@@ -25,6 +32,13 @@
 				<div class="col-sm-4">
 					<div class="signup-form"><!--sign up form-->
 						<h2>Đăng ký</h2>
+						<?php
+					$namedangly = Session::get('namedangly');
+					if($namedangly){
+						echo '<span class="text-alert" style="color:red;">'.$namedangly.'</span>';
+						Session::put('namedangly',null);
+						}
+						?>
 						<form action="{{URL::to('/save-user-tt')}}" method="post" enctype="multipart/form-data">
 							{{ csrf_field() }}
 							<input type="text" name="customer_name" placeholder="Họ và tên"/>

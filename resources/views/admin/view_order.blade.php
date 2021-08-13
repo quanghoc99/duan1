@@ -21,6 +21,7 @@
           <tr>
 
             <th>Tên khách hàng</th>
+            <th>địa chỉ</th>
             <th>Số điện thoại</th>
 
 
@@ -32,7 +33,8 @@
           <tr>
 
             <td>{{$order_by_id->customer_name}}</td>
-            <td>{{$order_by_id->customer_phone}}</td>
+            <td>{{$order_by_id->shipping_address}}</td>
+            <td>{{$order_by_id->shipping_phone}}</td>
 
 
           </tr>
@@ -62,7 +64,7 @@
             <th>Tên sản phẩm</th>
             <th>Số lượng</th>
             <th>Giá</th>
-            <th>Tổng tiền</th>
+            <th>Tổng tiền theo thuế</th>
 
             <th style="width:30px;"></th>
           </tr>
@@ -73,12 +75,12 @@
             <td>{{$item->product_name}}</td>
             <td>{{$item->product_sales_quantity}}</td>
             <td>{{$item->product_price}}</td>
-            <td>{{$item->product_price*$item->product_sales_quantity}}</td>
+            <td>{{($item->product_price/100*21)+$item->product_price}}</td>
                         </tr>
 @endforeach
 <tr>
-
-            <td>{{$item->product_price*$item->product_sales_quantity}}</td>
+            <td>Tổng tiền : {{$order_by_id->order_total}}</td>
+            <td></td>
 </tr>
         </tbody>
       </table>

@@ -29,7 +29,7 @@
           @foreach($all_order as $key => $order)
           <tr>
             <td>{{ $order->customer_name }}</td>
-            <td>{{ $order->order_total }}</td>
+            <td>{{ $order->order_total }} </td>
             <td>{{ $order->order_status }}</td>
 
             <td>

@@ -68,6 +68,14 @@
 						@endforeach
 					</tbody>
 				</table>
+				<?php
+									$giasp = Session::get('giasp');
+									if($giasp){
+										echo '<span class="text-alert" style="color:red;">'.$giasp.'</span>';
+										Session::put('giasp',null);
+										
+						}
+						?>
 			</div>
 			<h4 style="margin:40px 0;font-size: 20px;">Chọn hình thức thanh toán</h4>
 			<form method="POST" action="{{URL::to('/order-place')}}">

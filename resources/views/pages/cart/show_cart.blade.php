@@ -76,13 +76,15 @@
 				<div class="col-sm-6">
 					<div class="total_area">
 						<ul>
-							<li>Tổng <span>{{Cart::total().' '.'vnđ'}}</span></li>
+							<li>Tổng <span>{{Cart::weight().' '.'vnđ'}}</span></li>
 							<li>Thuế <span>{{Cart::tax().' '.'vnđ'}}</span></li>
-							<li>Phí vận chuyển <span>Free</span></li>
+							<li>Phí vận chuyển <span></span></li>
 							<li>Thành tiền <span>{{Cart::total().' '.'vnđ'}}</span></li>
 						</ul>
 
+                                  
                                 <a class="btn btn-default check_out" href="{{URL::to('/checkout')}}">Thanh toán</a>
+  
 
 
 

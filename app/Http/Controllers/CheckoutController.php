@@ -66,10 +66,82 @@ class CheckoutController extends Controller
     }
     public function save_checkout_customer(Request $request){
     	$data = array();
-    	$data['shipping_name'] = $request->shipping_name;
-    	$data['shipping_phone'] = $request->shipping_phone;
-    	$data['shipping_email'] = $request->shipping_email;
-    	$data['shipping_notes'] = $request->shipping_notes;
+        if ($request->shipping_name == '') {
+
+            Session::put('nameshipping','Name không được để trống');
+            return Redirect::to('/checkout');
+    
+        } elseif (is_numeric($request->shipping_name)) {
+    
+            Session::put('nameshipping','Name không thể để là số');
+            return Redirect::to('/checkout');
+    
+    
+        } elseif (strlen($request->shipping_name) < 3) {
+    
+            Session::put('nameshipping','Name không được nhỏ hơn 3 kí tự');
+            return Redirect::to('/checkout');
+    
+    
+        } else {
+    
+            $data['shipping_name'] = $request->shipping_name;
+        }
+    	// vali phone
+    if ($request->shipping_phone == '') {
+
+        Session::put('nameshipping','SĐT không được để trống');
+        return Redirect::to('/checkout');
+
+    } elseif (!is_numeric($request->shipping_phone)) {
+
+        Session::put('nameshipping','SĐT phải là số');
+        return Redirect::to('/checkout');
+
+
+    } elseif ( strlen($request->shipping_phone) !== 10) {
+
+        Session::put('nameshipping','SĐT phai la 10 so');
+        return Redirect::to('/checkout');
+
+
+    } else {
+
+        $data['shipping_phone'] = $request->shipping_phone;
+    }
+    // vali mail
+    if ($request->shipping_email == '') {
+
+        Session::put('nameshipping','email không được để trống');
+        return Redirect::to('/checkout');
+
+    } else {
+
+        $data['shipping_email'] = $request->shipping_email;
+    }
+    	// note
+        if ($request->shipping_notes == '') {
+
+            Session::put('nameshipping','địa chỉ không được để trống');
+            return Redirect::to('/checkout');
+    
+        } elseif (is_numeric($request->shipping_notes)) {
+    
+            Session::put('nameshipping','địa chỉ không thể để là số');
+            return Redirect::to('/checkout');
+    
+    
+        } elseif (strlen($request->shipping_notes) < 5) {
+    
+            Session::put('nameshipping','vui lòng nhập địa chỉ cụ thể');
+            return Redirect::to('/checkout');
+    
+    
+        } else {
+    
+            $data['shipping_notes'] = $request->shipping_notes;
+        }
+
     	$data['shipping_address'] = $request->shipping_address;
 
     	$shipping_id = DB::table('tbl_shipping')->insertGetId($data);
@@ -90,16 +162,30 @@ class CheckoutController extends Controller
         //insert payment_method
 
         $data = array();
+        
+        if($request->payment_option == ''){
+            $request->payment_option = 2;
+        }
         $data['payment_method'] = $request->payment_option;
         $data['payment_status'] = 'Đang chờ xử lý';
         $payment_id = DB::table('tbl_payment')->insertGetId($data);
 
         //insert order
         $order_data = array();
+        if(Session::get('customer_id')!==null){
         $order_data['customer_id'] = Session::get('customer_id');
+        }else{
+            $order_data['customer_id'] = 9;
+        }
         $order_data['shipping_id'] = Session::get('shipping_id');
         $order_data['payment_id'] = $payment_id;
-        $order_data['order_total'] = Cart::total();
+        if(Cart::total() != 0.00){
+            $order_data['order_total'] = Cart::total();
+        }else{
+            Session::put('giasp','không có sản phẩm nào được chọn');
+            return Redirect::to('/payment');
+        }
+        
         $order_data['order_status'] = 'Đang chờ xử lý';
         $order_id = DB::table('tbl_order')->insertGetId($order_data);
 
@@ -149,12 +235,19 @@ class CheckoutController extends Controller
             Session::put('customer_phone',$result->customer_phone);
     		return Redirect::to('/checkout');
     	}else{
+            Session::put('message','Mật khẩu hoặc tài khoản bị sai.Làm ơn nhập lại');
     		return Redirect::to('/login-checkout');
     	}
 
 
 
 
+    }
+    public function delete_order($order_id){
+        $this->AuthLogin();
+        DB::table('tbl_order')->where('order_id',$order_id)->delete();
+        Session::put('message','Xóa thành công');
+        return Redirect::to('/manage-order');
     }
     public function manage_order(){
 
